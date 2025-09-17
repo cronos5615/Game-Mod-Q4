@@ -443,10 +443,14 @@ stateResult_t rvWeaponRocketLauncher::State_Fire ( const stateParms_t& parms ) {
 		STAGE_INIT,
 		STAGE_WAIT,
 	};	
+	idVec3 originalAxis = playerViewAxis[0];
 	switch ( parms.stage ) {
 		case STAGE_INIT:
-			nextAttackTime = gameLocal.time + (fireRate * owner->PowerUpModifier ( PMOD_FIRERATE ));		
-			Attack ( false, 1, spread, 0, 1.0f );
+			nextAttackTime = gameLocal.time + (fireRate * owner->PowerUpModifier ( PMOD_FIRERATE ));	
+			playerViewAxis[0] = idVec3(0, 0, 1);
+			attackDict.SetFloat("speed", 2000.f);
+			Attack ( false, 3, 10, 0, 1.0f );
+			playerViewAxis[0] = originalAxis;
 			PlayAnim ( ANIMCHANNEL_LEGS, "fire", parms.blendFrames );	
 			return SRESULT_STAGE ( STAGE_WAIT );
 	
@@ -475,7 +479,6 @@ stateResult_t rvWeaponRocketLauncher::State_Rocket_Idle ( const stateParms_t& pa
 		STAGE_WAIT,
 		STAGE_WAITEMPTY,
 	};	
-	
 	switch ( parms.stage ) {
 		case STAGE_INIT:
 			if ( AmmoAvailable ( ) <= AmmoInClip() ) {
