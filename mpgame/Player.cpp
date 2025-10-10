@@ -13054,6 +13054,7 @@ const idDeclEntityDef* idPlayer::GetWeaponDef ( int weaponIndex ) {
 
 	idStr weapon;
 	weapon = spawnArgs.GetString ( va("def_weapon%d", weaponIndex ) );
+	gameLocal.Printf(weapon);
 	if ( !weapon.Length() ) {
 		return NULL;
 	}

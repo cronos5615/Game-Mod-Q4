@@ -3,52 +3,52 @@
 
 #include "../Game_local.h"
 #include "../Weapon.h"
-//BLASTER IS CRIT BOW
-class rvWeaponBlaster : public rvWeapon {
-	CLASS_PROTOTYPE(rvWeaponBlaster);
+
+class WeaponCritBow : public rvWeapon {
+	CLASS_PROTOTYPE(WeaponCritBow);
 
 
-	rvWeaponBlaster(void);
-
+	WeaponCritBow(void);
+	
 	virtual void		Spawn(void);
 	void				Save(idSaveGame* savefile) const;
 	void				Restore(idRestoreGame* savefile);
 	void				PreSave(void);
 	void				PostSave(void);
 
-protected:
+	protected:
 
-	bool				UpdateAttack(void);
+		bool				UpdateAttack(void);
 
-private:
+	private:
 
-	int					chargeTime;
-	int					chargeDelay;
-	bool				fireForced;
-	int					fireHeldTime;
-	bool				zoomed;
-	float				extra_crit_dmg = 2.00;
-	float				bow_capable_mult = 1.00;
-	float				charged_mult = 1.00;
+		int					chargeTime;
+		int					chargeDelay;
+		bool				fireForced;
+		int					fireHeldTime;
+		bool				zoomed;
+		float				extra_crit_dmg = 2.00;
+		float				bow_capable_mult = 0.5;
+		float				charged_mult = 1.00;
 
-	stateResult_t		State_Raise(const stateParms_t& parms);
-	stateResult_t		State_Lower(const stateParms_t& parms);
-	stateResult_t		State_Idle(const stateParms_t& parms);
-	stateResult_t		State_Charge(const stateParms_t& parms);
-	stateResult_t		State_Charged(const stateParms_t& parms);
-	stateResult_t		State_Fire(const stateParms_t& parms);
-	stateResult_t		State_Flashlight(const stateParms_t& parms);
+		stateResult_t		State_Raise(const stateParms_t& parms);
+		stateResult_t		State_Lower(const stateParms_t& parms);
+		stateResult_t		State_Idle(const stateParms_t& parms);
+		stateResult_t		State_Charge(const stateParms_t& parms);
+		stateResult_t		State_Charged(const stateParms_t& parms);
+		stateResult_t		State_Fire(const stateParms_t& parms);
+		stateResult_t		State_Flashlight(const stateParms_t& parms);
 
-	CLASS_STATES_PROTOTYPE(rvWeaponBlaster);
+		CLASS_STATES_PROTOTYPE(WeaponCritBow);
 };
 
-CLASS_DECLARATION(rvWeapon, rvWeaponBlaster)
+CLASS_DECLARATION(rvWeapon, WeaponCritBow)
 END_CLASS
 
-rvWeaponBlaster::rvWeaponBlaster(void) {
+WeaponCritBow::WeaponCritBow(void) {
 }
 
-bool rvWeaponBlaster::UpdateAttack(void) {
+bool WeaponCritBow::UpdateAttack(void) {
 	// Clear fire forced
 	if (fireForced) {
 		if (!wsfl.attack) {
@@ -98,7 +98,7 @@ bool rvWeaponBlaster::UpdateAttack(void) {
 	return false;
 }
 
-void rvWeaponBlaster::Spawn(void) {
+void WeaponCritBow::Spawn(void) {
 	SetState("Raise", 0);
 
 	chargeTime = SEC2MS(spawnArgs.GetFloat("chargeTime"));
@@ -108,16 +108,16 @@ void rvWeaponBlaster::Spawn(void) {
 	fireForced = false;
 }
 
-void rvWeaponBlaster::Save(idSaveGame* savefile) const {
+void WeaponCritBow::Save(idSaveGame* savefile) const {
 	savefile->WriteInt(chargeTime);
 	savefile->WriteInt(chargeDelay);
 	savefile->WriteBool(fireForced);
 	savefile->WriteInt(fireHeldTime);
-
+	
 }
 
 
-void rvWeaponBlaster::Restore(idRestoreGame* savefile) {
+void WeaponCritBow::Restore(idRestoreGame* savefile) {
 	savefile->ReadInt(chargeTime);
 	savefile->ReadInt(chargeDelay);
 	savefile->ReadBool(fireForced);
@@ -125,23 +125,23 @@ void rvWeaponBlaster::Restore(idRestoreGame* savefile) {
 
 }
 
-void rvWeaponBlaster::PreSave(void) {
+void WeaponCritBow::PreSave(void) {
 	SetState("Idle", 4);
 }
 
-void rvWeaponBlaster::PostSave(void) {
+void WeaponCritBow::PostSave(void) {
 }
 
-CLASS_STATES_DECLARATION(rvWeaponBlaster)
-STATE("Raise", rvWeaponBlaster::State_Raise)
-STATE("Lower", rvWeaponBlaster::State_Lower)
-STATE("Idle", rvWeaponBlaster::State_Idle)
-STATE("Charge", rvWeaponBlaster::State_Charge)
-STATE("Charged", rvWeaponBlaster::State_Charged)
-STATE("Fire", rvWeaponBlaster::State_Fire)
+CLASS_STATES_DECLARATION(WeaponCritBow)
+STATE("Raise", WeaponCritBow::State_Raise)
+STATE("Lower", WeaponCritBow::State_Lower)
+STATE("Idle", WeaponCritBow::State_Idle)
+STATE("Charge", WeaponCritBow::State_Charge)
+STATE("Charged", WeaponCritBow::State_Charged)
+STATE("Fire", WeaponCritBow::State_Fire)
 END_CLASS_STATES
 
-stateResult_t rvWeaponBlaster::State_Raise(const stateParms_t& parms) {
+stateResult_t WeaponCritBow::State_Raise(const stateParms_t& parms) {
 	enum {
 		RAISE_INIT,
 		RAISE_WAIT,
@@ -166,7 +166,7 @@ stateResult_t rvWeaponBlaster::State_Raise(const stateParms_t& parms) {
 	return SRESULT_ERROR;
 }
 
-stateResult_t rvWeaponBlaster::State_Lower(const stateParms_t& parms) {
+stateResult_t WeaponCritBow::State_Lower(const stateParms_t& parms) {
 	enum {
 		LOWER_INIT,
 		LOWER_WAIT,
@@ -195,7 +195,7 @@ stateResult_t rvWeaponBlaster::State_Lower(const stateParms_t& parms) {
 	return SRESULT_ERROR;
 }
 
-stateResult_t rvWeaponBlaster::State_Idle(const stateParms_t& parms) {
+stateResult_t WeaponCritBow::State_Idle(const stateParms_t& parms) {
 	enum {
 		IDLE_INIT,
 		IDLE_WAIT,
@@ -211,17 +211,16 @@ stateResult_t rvWeaponBlaster::State_Idle(const stateParms_t& parms) {
 			SetState("Lower", 4);
 			return SRESULT_DONE;
 		}
-
+		
 		if (UpdateAttack()) {
 			return SRESULT_DONE;
 		}
 		return SRESULT_WAIT;
-		}
-		return SRESULT_ERROR;
 	}
+	return SRESULT_ERROR;
+}
 
-
-stateResult_t rvWeaponBlaster::State_Charge(const stateParms_t& parms) {
+stateResult_t WeaponCritBow::State_Charge(const stateParms_t& parms) {
 	enum {
 		CHARGE_INIT,
 		CHARGE_WAIT,
@@ -247,30 +246,30 @@ stateResult_t rvWeaponBlaster::State_Charge(const stateParms_t& parms) {
 	}
 	return SRESULT_ERROR;
 }
-stateResult_t rvWeaponBlaster::State_Charged(const stateParms_t& parms) {
-	enum {
-		CHARGED_INIT,
-		CHARGED_WAIT,
-	};
-	switch (parms.stage) {
-	case CHARGED_INIT:
+stateResult_t WeaponCritBow::State_Charged(const stateParms_t& parms) {
+		enum {
+			CHARGED_INIT,
+			CHARGED_WAIT,
+		};
+		switch (parms.stage) {
+		case CHARGED_INIT:
 
-		StopSound(SND_CHANNEL_ITEM, false);
-		StartSound("snd_charge_loop", SND_CHANNEL_ITEM, 0, false, NULL);
-		StartSound("snd_charge_click", SND_CHANNEL_BODY, 0, false, NULL);
-		return SRESULT_STAGE(CHARGED_WAIT);
+			StopSound(SND_CHANNEL_ITEM, false);
+			StartSound("snd_charge_loop", SND_CHANNEL_ITEM, 0, false, NULL);
+			StartSound("snd_charge_click", SND_CHANNEL_BODY, 0, false, NULL);
+			return SRESULT_STAGE(CHARGED_WAIT);
 
-	case CHARGED_WAIT:
-		if (!wsfl.attack) {
-			fireForced = true;
-			SetState("Fire", 0);
-			return SRESULT_DONE;
+		case CHARGED_WAIT:
+			if (!wsfl.attack) {
+				fireForced = true;
+				SetState("Fire", 0);
+				return SRESULT_DONE;
+			}
+			return SRESULT_WAIT;
 		}
-		return SRESULT_WAIT;
+		return SRESULT_ERROR;
 	}
-	return SRESULT_ERROR;
-}
-stateResult_t rvWeaponBlaster::State_Fire(const stateParms_t& parms) {
+stateResult_t WeaponCritBow::State_Fire(const stateParms_t& parms) {
 	enum {
 		FIRE_INIT,
 		FIRE_WAIT,
@@ -298,24 +297,24 @@ stateResult_t rvWeaponBlaster::State_Fire(const stateParms_t& parms) {
 			SetState("Idle", 4);
 			return SRESULT_DONE;
 		}
-
-		if (owner->capable == idPlayer::CAPABLE::BOW) {
+		
+		if (player->capable == idPlayer::CAPABLE::BOW) {
 			total_multiplier += bow_capable_mult;
 		}
 		if (crit) {
-			total_multiplier += owner->crit_dmg + extra_crit_dmg;
+			total_multiplier += player->crit_dmg + extra_crit_dmg;
 		}
 		//charged attack
 		if (gameLocal.time - fireHeldTime > chargeTime) {
 			total_multiplier += charged_mult;
-			gameLocal.Printf("Firing a charged attack with multiplier %f\n", total_multiplier);
+			gameLocal.Printf("Firing a charged attack with multiplier %f",total_multiplier);
 			Attack(true, 1, spread, 0, total_multiplier);
 			PlayEffect("fx_chargedflash", barrelJointView, false);
 			PlayAnim(ANIMCHANNEL_ALL, "chargedfire", parms.blendFrames);
 		}
 		//normal attack
 		else {
-			gameLocal.Printf("Firing a normal attack with multiplier %f\n", total_multiplier);
+			gameLocal.Printf("Firing a normal attack with multiplier %f", total_multiplier);
 			Attack(false, 1, spread, 0, total_multiplier);
 			PlayEffect("fx_normalflash", barrelJointView, false);
 			PlayAnim(ANIMCHANNEL_ALL, "fire", parms.blendFrames);

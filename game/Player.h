@@ -279,7 +279,16 @@ public:
 		EVENT_EMOTE,
  		EVENT_MAXEVENTS
  	};
+	enum CAPABLE {
+		BOW,
+		POLEARM,
+		CATALYST,
+		SWORD,
+		GREATSWORD
 
+	};
+	enum CAPABLE capable;
+	float damage_mult;
 	friend class idThread;
 
 	usercmd_t				usercmd;
@@ -795,7 +804,8 @@ public:
 	void					SetCash( float newCashAmount );
 	void					ResetCash();
 // RITUAL END
-
+	float					crit_rate = 0.05;
+	float					crit_dmg = 1.50;
 protected:
 	void					SetupHead( const char* modelKeyName = "", idVec3 headOffset = idVec3(0, 0, 0) );
 
@@ -1153,6 +1163,9 @@ private:
 	stateResult_t			State_Legs_Fall					( const stateParms_t& parms );
 	stateResult_t			State_Legs_Land					( const stateParms_t& parms );
 	stateResult_t			State_Legs_Dead					( const stateParms_t& parms );
+
+
+	
 	
  	CLASS_STATES_PROTOTYPE( idPlayer );
 };
